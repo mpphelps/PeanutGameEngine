@@ -32,6 +32,9 @@ namespace peanut {
 		private:
 			GLint getUniformLocation(const GLchar* name);
 			GLuint load();
+			GLuint compileVertexShader();
+			GLuint compileFragmentShader();
+			GLuint linkShaderProgram(GLuint vertex, GLuint fragment);
 		};
 
 	}

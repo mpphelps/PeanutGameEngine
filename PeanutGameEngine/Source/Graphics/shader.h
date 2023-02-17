@@ -26,12 +26,15 @@ namespace peanut {
 			void setUniformMat4f(const GLchar* name, const maths::vec4& vector);
 			void setUniformMat4(const GLchar* name, const maths::mat4& matrix);
 
-			void enable() const;
+			void use() const;
 			void disable() const;
 
 		private:
 			GLint getUniformLocation(const GLchar* name);
 			GLuint load();
+			GLuint compileShader(const char* shaderPath, GLenum type);
+			GLuint linkShaderProgram(GLuint vertex, GLuint fragment);
+			
 		};
 
 	}

@@ -21,14 +21,17 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Source\Graphics\shader.cpp" />
+    <ClCompile Include="Source\Graphics\texture.cpp" />
     <ClCompile Include="Source\Graphics\window.cpp" />
     <ClCompile Include="Source\Math\mat4.cpp" />
     <ClCompile Include="Source\Math\vec2.cpp" />
     <ClCompile Include="Source\Math\vec3.cpp" />
     <ClCompile Include="Source\Math\vec4.cpp" />
+    <ClCompile Include="Source\Utils\stb_define.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\shader.h" />
+    <ClInclude Include="Source\Graphics\texture.h" />
     <ClInclude Include="Source\Graphics\window.h" />
     <ClInclude Include="Source\Math\mat4.h" />
     <ClInclude Include="Source\Math\maths.h" />
@@ -37,10 +40,19 @@
     <ClInclude Include="Source\Math\vec3.h" />
     <ClInclude Include="Source\Math\vec4.h" />
     <ClInclude Include="Source\Utils\fileutils.h" />
+    <ClInclude Include="Source\Utils\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shaders\basic.frag" />
     <None Include="Source\Shaders\basic.vert" />
+    <None Include="Source\Shaders\basicTexture.frag" />
+    <None Include="Source\Shaders\basicTexture.vert" />
+    <None Include="Source\Shaders\basicUniform.frag" />
+    <None Include="Source\Shaders\basicUniform.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Source\Textures\container.jpg" />
+    <Image Include="Source\Textures\wall.jpg" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

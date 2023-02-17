@@ -13,7 +13,7 @@ namespace peanut {
 			glDeleteProgram(m_ShaderID);
 		}
 
-		void Shader::enable() const {
+		void Shader::use() const {
 			glUseProgram(m_ShaderID);
 		}
 
@@ -22,49 +22,54 @@ namespace peanut {
 		}
 
 		GLuint Shader::load() {
-			GLuint program = glCreateProgram();
-			GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
-			GLuint fragment = glCreateShader(GL_FRAGMENT_SHADER);
+			GLuint vertexShader = compileShader(m_Vertpath, GL_VERTEX_SHADER);
+			GLuint fragmentShader = compileShader(m_Fragpath, GL_FRAGMENT_SHADER);
+			GLuint shaderProgram = linkShaderProgram(vertexShader, fragmentShader);
+			return shaderProgram;
+		}
 
-			std::string vertSourceString = FileUtils::read_file(m_Vertpath);
-			std::string fragSourceString = FileUtils::read_file(m_Fragpath);
+		GLuint Shader::compileShader(const char* shaderPath, GLenum type) {
+			GLuint shader = glCreateShader(type);
+			std::string shaderSourceString = FileUtils::readShaderFile(shaderPath);
+			const char* shaderSource = shaderSourceString.c_str();
+			// Compile vertex shaders
+			glShaderSource(shader, 1, &shaderSource, NULL);
+			glCompileShader(shader);
 
-			const char* vertSource = vertSourceString.c_str();
-			const char* fragSource = fragSourceString.c_str();
-
-			glShaderSource(vertex, 1, &vertSource, NULL);
-			glCompileShader(vertex);
-
+			// Check for vertex shader compile problems
 			GLint result;
-			glGetShaderiv(vertex, GL_COMPILE_STATUS, &result);
+			glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
 			if (result == GL_FALSE) {
 				GLint length;
-				glGetShaderiv(vertex, GL_INFO_LOG_LENGTH, &length);
+				glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
 				std::vector<char> error(length);
-				glGetShaderInfoLog(vertex, length, &length, &error[0]);
-				std::cout << "Failed to compile vertex shader" << std::endl << &error[0] << std::endl;
-				glDeleteShader(vertex);
+				glGetShaderInfoLog(shader, length, &length, &error[0]);
+				std::cout << "Failed to compile " << shaderPath << " shader" << std::endl << &error[0] << std::endl;
+				glDeleteShader(shader);
 				return 0;
 			}
+			return shader;
+		}
 
-			glShaderSource(fragment, 1, &fragSource, NULL);
-			glCompileShader(fragment);
-
-			glGetShaderiv(fragment, GL_COMPILE_STATUS, &result);
-			if (result == GL_FALSE) {
-				GLint length;
-				glGetShaderiv(fragment, GL_INFO_LOG_LENGTH, &length);
-				std::vector<char> error(length);
-				glGetShaderInfoLog(fragment, length, &length, &error[0]);
-				std::cout << "Failed to compile fragment shader" << std::endl << &error[0] << std::endl;
-				glDeleteShader(fragment);
-				return 0;
-			}
-
+		GLuint Shader::linkShaderProgram(GLuint vertex, GLuint fragment) {
+			GLuint program = glCreateProgram();
+			// Link shaders
 			glAttachShader(program, vertex);
 			glAttachShader(program, fragment);
-
 			glLinkProgram(program);
+
+			// Check for sahder program linking errors
+			GLint result;
+			glGetProgramiv(program, GL_LINK_STATUS, &result);
+			if (result == GL_FALSE) {
+				GLint length;
+				glGetShaderiv(program, GL_INFO_LOG_LENGTH, &length);
+				std::vector<char> error(length);
+				glGetProgramInfoLog(program, length, NULL, &error[0]);
+				std::cout << "Failed to compile fragment shader" << std::endl << &error[0] << std::endl;
+				glDeleteShader(program);
+				return 0;
+			}
 			glValidateProgram(program);
 
 			glDeleteShader(vertex);

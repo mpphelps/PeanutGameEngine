@@ -82,10 +82,10 @@ namespace peanut{
 		}
 
 		void Window::update() {
+			glfwSwapBuffers(m_Window);
 			glfwPollEvents();
 			//glfwGetFramebufferSize(m_Window, &m_Width, &m_Height);
 			
-			glfwSwapBuffers(m_Window);
 		}
 
 		bool Window::closed() const {

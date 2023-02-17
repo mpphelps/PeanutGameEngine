@@ -36,6 +36,12 @@
     <ClCompile Include="Source\Graphics\shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Utils\stb_define.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\window.h">
@@ -65,9 +71,27 @@
     <ClInclude Include="Source\Graphics\shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Utils\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shaders\basic.vert" />
     <None Include="Source\Shaders\basic.frag" />
+    <None Include="Source\Shaders\basicUniform.frag" />
+    <None Include="Source\Shaders\basicUniform.vert" />
+    <None Include="Source\Shaders\basicTexture.frag" />
+    <None Include="Source\Shaders\basicTexture.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Source\Textures\wall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Source\Textures\container.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

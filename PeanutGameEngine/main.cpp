@@ -4,6 +4,7 @@
 #include "Source/Utils/stb_image.h"
 #include "Source/Graphics/texture.h"
 
+
 #define LOG(x) std::cout << x << std::endl;
 
 // GLSL language integration
@@ -16,23 +17,21 @@ int main()
 	using namespace maths;
 
 	Window window("Peanut!", 800, 600);
-
 	Shader shader("Source/Shaders/basicTexture.vert", "Source/Shaders/basicTexture.frag");
+	Texture texture1("Source/Textures/container.jpg", false);
+	Texture texture2("Source/Textures/awesomeface.png", true);
 
 	float vertices[] = {
-		// positions          // colors           // texture coords
-		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
-	};
+        // positions          // colors           // texture coords (note that we changed them to 'zoom in' on our texture image)
+         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
+    };
 	unsigned int indices[] = {
 		0, 1, 3, // first triangle
 		1, 2, 3  // second triangle
 	};
-	Texture texture("Source/Textures/container.jpg");
-
-
 
 	GLuint VBO, VAO, EBO;
 	glGenVertexArrays(1, &VAO);
@@ -61,20 +60,27 @@ int main()
 	
 	// uncomment this call to draw in wireframe polygons.
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	shader.use();
+	shader.setUniformMat1i("texture1", 0);
+	shader.setUniformMat1i("texture2", 1);
+	shader.setUniformMat1f("mixture", 0.5f);
+	
 
 	while (!window.closed()) {
-		
+
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		window.clear();
 
-		texture.Bind();
-		shader.use();
+		texture1.bind(GL_TEXTURE0);
+		texture2.bind(GL_TEXTURE1);
 		
 		glBindVertexArray(VAO);
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		//glDrawArrays(GL_TRIANGLES, 0, 3);
 		window.update();
+
+
 	}
 
 	glDeleteVertexArrays(1, &VAO);
@@ -82,6 +88,8 @@ int main()
 	glDeleteBuffers(1, &EBO);
 	shader.disable();
 	shader.~Shader();
+	texture1.~Texture();
+	texture2.~Texture();
 	glfwTerminate();
 	return 0;
 }

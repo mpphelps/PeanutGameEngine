@@ -93,5 +93,8 @@
     <Image Include="Source\Textures\container.jpg">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Source\Textures\awesomeface.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

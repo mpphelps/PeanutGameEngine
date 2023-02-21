@@ -122,23 +122,26 @@ namespace peanut {
 		mat4 mat4::rotation(float angle, const vec3& axis) {
 			mat4 result(0.0f);
 
-			float radians = toRadians(angle);
-			float c = cos(radians);
-			float s = sin(radians);
+			float a = toRadians(angle);
+			float c = cos(a);
+			float s = sin(a);
 			float omc = 1.0f - c;
 
 			float x = axis.x;
 			float y = axis.y;
 			float z = axis.z;
 
+			// first column
 			result.elements[0 + 0 * 4] = c + pow(x,2) * omc;
 			result.elements[1 + 0 * 4] = y * x * omc + z * s;
 			result.elements[2 + 0 * 4] = z * x * omc - y * s;
 
+			// second column
 			result.elements[0 + 1 * 4] = x * y * omc - z * s;
 			result.elements[1 + 1 * 4] = c + pow(y,2) * omc;
 			result.elements[2 + 1 * 4] = z * y * omc + x * s;
 
+			// third column
 			result.elements[0 + 2 * 4] = x * z * omc + y * s;
 			result.elements[1 + 2 * 4] = y * z * omc - x * s;
 			result.elements[2 + 2 * 4] = c + pow(z,2) * omc;

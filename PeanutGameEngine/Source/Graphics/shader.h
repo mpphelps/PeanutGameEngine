@@ -26,6 +26,7 @@ namespace peanut {
 			void setUniformMat3f(const GLchar* name, const glm::vec3& vector);
 			void setUniformMat4f(const GLchar* name, const glm::vec4& vector);
 			void setUniformMat4(const GLchar* name, const glm::mat4& matrix);
+			void setUniformMat4(const GLchar* name, const maths::mat4& matrix);
 
 			void use() const;
 			void disable() const;

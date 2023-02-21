@@ -1,6 +1,6 @@
 #include "Source/Graphics/window.h"
 #include "Source/Graphics/shader.h"
-//#include "Source/Math/maths.h"
+#include "Source/Math/maths.h"
 #include "Source/Utils/stb_image.h"
 #include "Source/Graphics/texture.h"
 
@@ -92,6 +92,7 @@ int main()
 		// ****** first transformation ******
 		glm::mat4 transform = glm::mat4(1.0f);
 		transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
+		//transform = glm::rotate(transform, (float)glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 		
 		// set shader uniform
@@ -100,14 +101,16 @@ int main()
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-		// ****** second transformation ******
-		transform = glm::mat4(1.0f);
-		transform = glm::translate(transform, glm::vec3(-0.5f, 0.5f, 0.0f));
+		// ****** second transformation using my own stuff ******
+		mat4 transform2 = mat4::identity();
+		transform2 = mat4::translation(vec3(-0.5f, 0.5f, 0.0f));
 		float scaleFactor = abs(sin(glfwGetTime()));
-		transform = glm::scale(transform, glm::vec3(scaleFactor, scaleFactor, 0.0f));
+		transform2 = transform2 * mat4::scale(vec3(scaleFactor, scaleFactor, 0.0f));
+		//transform2 = transform2 * mat4::rotation((float)glfwGetTime(), vec3(0.0f, 0.0f, 1.0f));
+		//transform2 = transform2 * mat4::rotation(90, vec3(0.0f, 0.0f, 1.0f));
 
 		// set shader uniform
-		shader.setUniformMat4("transform", transform);
+		shader.setUniformMat4("transform", transform2);
 		// draw contain
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

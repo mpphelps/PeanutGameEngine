@@ -107,5 +107,9 @@ namespace peanut {
 			glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
 		}
 
+		void Shader::setUniformMat4(const GLchar* name, const maths::mat4& matrix) {
+			glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, matrix.elements);
+		}
+
 	}
 }

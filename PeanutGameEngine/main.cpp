@@ -1,8 +1,12 @@
 #include "Source/Graphics/window.h"
 #include "Source/Graphics/shader.h"
-#include "Source/Math/maths.h"
+//#include "Source/Math/maths.h"
 #include "Source/Utils/stb_image.h"
 #include "Source/Graphics/texture.h"
+
+#include "Source/glm/glm.hpp"
+#include "Source/glm/gtc/matrix_transform.hpp"
+#include "Source/glm/gtc/type_ptr.hpp"
 
 
 #define LOG(x) std::cout << x << std::endl;
@@ -17,21 +21,36 @@ int main()
 	using namespace maths;
 
 	Window window("Peanut!", 800, 600);
-	Shader shader("Source/Shaders/basicTexture.vert", "Source/Shaders/basicTexture.frag");
+	Shader shader("Source/Shaders/basicTransform.vert", "Source/Shaders/basicTransform.frag");
 	Texture texture1("Source/Textures/container.jpg", false);
 	Texture texture2("Source/Textures/awesomeface.png", true);
 
 	float vertices[] = {
-        // positions          // colors           // texture coords (note that we changed them to 'zoom in' on our texture image)
-         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
+        // positions          // texture coords
+         0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
+         0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
+        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
+        -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left 
     };
-	unsigned int indices[] = {
-		0, 1, 3, // first triangle
-		1, 2, 3  // second triangle
-	};
+    unsigned int indices[] = {
+        0, 1, 3, // first triangle
+        1, 2, 3  // second triangle
+    };
+
+	// It is advised to first do scaling operations, then rotations and lastly translations 
+	// when combining matrices otherwise they may (negatively) affect each other.
+
+	/*mat4 trans1 = mat4::translation(vec3(0.5f, 0.5f, 0.0f));
+	mat4 rot1 = mat4::rotation(180.0f, vec3(0.0f, 0.0f, 1.0f));
+	mat4 scale1 = mat4::scale(vec3(0.5f, 0.5f, 0.5f));
+	mat4 transform1 = rot1 * scale1;*/
+
+	// create transformations
+	/*glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+	glm::mat4 trans = glm::mat4(1.0f);
+	trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+	trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+	std::cout << vec.x << vec.y << vec.z << std::endl;*/
 
 	GLuint VBO, VAO, EBO;
 	glGenVertexArrays(1, &VAO);
@@ -48,14 +67,11 @@ int main()
 	
 	// glVertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean, normalized, GLsizei stride, const void *pointer);
 	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	// color attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	// texture coord attribute
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-	// texture attribute
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
 
 	
 	// uncomment this call to draw in wireframe polygons.
@@ -63,8 +79,7 @@ int main()
 	shader.use();
 	shader.setUniformMat1i("texture1", 0);
 	shader.setUniformMat1i("texture2", 1);
-	shader.setUniformMat1f("mixture", 0.5f);
-	
+	shader.setUniformMat1f("mixture", 0.5f);	
 
 	while (!window.closed()) {
 
@@ -74,9 +89,29 @@ int main()
 		texture1.bind(GL_TEXTURE0);
 		texture2.bind(GL_TEXTURE1);
 		
+		// ****** first transformation ******
+		glm::mat4 transform = glm::mat4(1.0f);
+		transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
+		transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+		
+		// set shader uniform
+		shader.setUniformMat4("transform", transform);
+		// draw contain
 		glBindVertexArray(VAO);
-
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		// ****** second transformation ******
+		transform = glm::mat4(1.0f);
+		transform = glm::translate(transform, glm::vec3(-0.5f, 0.5f, 0.0f));
+		float scaleFactor = abs(sin(glfwGetTime()));
+		transform = glm::scale(transform, glm::vec3(scaleFactor, scaleFactor, 0.0f));
+
+		// set shader uniform
+		shader.setUniformMat4("transform", transform);
+		// draw contain
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
 		//glDrawArrays(GL_TRIANGLES, 0, 3);
 		window.update();
 

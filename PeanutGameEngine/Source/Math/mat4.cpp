@@ -73,9 +73,6 @@ namespace peanut {
 		}
 
 
-		// It is advised to first do scaling operations, then rotations and lastly translations 
-		// when combining matrices otherwise they may (negatively) affect each other.
-
 		mat4 mat4::orthographic(float left, float right, float bottom, float top, float near, float far) {
 			// Cherno initialized everything to 1, and didn't have any 0s, but this is more in line with what's online
 			mat4 result(0.0f);
@@ -134,17 +131,17 @@ namespace peanut {
 			float y = axis.y;
 			float z = axis.z;
 
-			result.elements[0 + 0 * 4] = x * omc + c;
+			result.elements[0 + 0 * 4] = c + pow(x,2) * omc;
 			result.elements[1 + 0 * 4] = y * x * omc + z * s;
-			result.elements[2 + 0 * 4] = x * z * omc - y * s;
+			result.elements[2 + 0 * 4] = z * x * omc - y * s;
 
 			result.elements[0 + 1 * 4] = x * y * omc - z * s;
-			result.elements[1 + 1 * 4] = y * omc + c;
-			result.elements[2 + 1 * 4] = y * z * omc + x * s;
+			result.elements[1 + 1 * 4] = c + pow(y,2) * omc;
+			result.elements[2 + 1 * 4] = z * y * omc + x * s;
 
 			result.elements[0 + 2 * 4] = x * z * omc + y * s;
 			result.elements[1 + 2 * 4] = y * z * omc - x * s;
-			result.elements[2 + 2 * 4] = z * omc + c;
+			result.elements[2 + 2 * 4] = c + pow(z,2) * omc;
 
 			return result;
 		}

@@ -85,6 +85,8 @@
     <None Include="Source\Shaders\basicUniform.vert" />
     <None Include="Source\Shaders\basicTexture.frag" />
     <None Include="Source\Shaders\basicTexture.vert" />
+    <None Include="Source\Shaders\basicTransform.vert" />
+    <None Include="Source\Shaders\basicTransform.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Source\Textures\wall.jpg">

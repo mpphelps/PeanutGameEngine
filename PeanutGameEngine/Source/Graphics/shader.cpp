@@ -1,4 +1,5 @@
 #include "shader.h"
+#include "../glm/gtc/type_ptr.hpp"
 
 namespace peanut {
 	namespace graphics {
@@ -90,20 +91,20 @@ namespace peanut {
 			glUniform1i(getUniformLocation(name), value);
 		}
 
-		void Shader::setUniformMat2f(const GLchar* name, const maths::vec2& vector) {
+		void Shader::setUniformMat2f(const GLchar* name, const glm::vec2& vector) {
 			glUniform2f(getUniformLocation(name), vector.x, vector.y);
 		}
 
-		void Shader::setUniformMat3f(const GLchar* name, const maths::vec3& vector) {
+		void Shader::setUniformMat3f(const GLchar* name, const glm::vec3& vector) {
 			glUniform3f(getUniformLocation(name), vector.x, vector.y, vector.z);
 		}
 
-		void Shader::setUniformMat4f(const GLchar* name, const maths::vec4& vector) {
+		void Shader::setUniformMat4f(const GLchar* name, const glm::vec4& vector) {
 			glUniform4f(getUniformLocation(name), vector.x, vector.y, vector.z, vector.w);
 		}
 
-		void Shader::setUniformMat4(const GLchar* name, const maths::mat4& matrix) {
-			glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, matrix.elements);
+		void Shader::setUniformMat4(const GLchar* name, const glm::mat4& matrix) {
+			glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
 		}
 
 	}

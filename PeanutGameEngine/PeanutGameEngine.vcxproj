@@ -47,6 +47,8 @@
     <None Include="Source\Shaders\basic.vert" />
     <None Include="Source\Shaders\basicTexture.frag" />
     <None Include="Source\Shaders\basicTexture.vert" />
+    <None Include="Source\Shaders\basicTransform.frag" />
+    <None Include="Source\Shaders\basicTransform.vert" />
     <None Include="Source\Shaders\basicUniform.frag" />
     <None Include="Source\Shaders\basicUniform.vert" />
   </ItemGroup>

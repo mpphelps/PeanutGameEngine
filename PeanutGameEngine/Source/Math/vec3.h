@@ -1,5 +1,5 @@
 #pragma once
-#include <iostream>
+#include <istream>
 
 namespace peanut {
 	namespace maths {

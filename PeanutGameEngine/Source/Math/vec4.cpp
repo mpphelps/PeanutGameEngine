@@ -31,6 +31,7 @@ namespace peanut {
 			w *= other.w;
 			return *this;
 		}
+
 		vec4& vec4::divid(const vec4& other) {
 			x /= other.x;
 			y /= other.y;
@@ -50,6 +51,28 @@ namespace peanut {
 		vec4 operator*(vec4 left, const vec4& right) {
 			return left.multiply(right);
 		}
+
+		/*vec4 operator*(const mat4 left, const vec4 right) {
+			vec4 result;
+			result.x = left.elements[0 + 0 * 4] * right.x +
+				left.elements[0 + 1 * 4] * right.y +
+				left.elements[0 + 2 * 4] * right.z +
+				left.elements[0 + 3 * 4] * right.w;
+			result.y = left.elements[1 + 0 * 4] * right.x +
+				left.elements[1 + 1 * 4] * right.y +
+				left.elements[1 + 2 * 4] * right.z +
+				left.elements[1 + 3 * 4] * right.w;
+			result.z = left.elements[2 + 0 * 4] * right.x +
+				left.elements[2 + 1 * 4] * right.y +
+				left.elements[2 + 2 * 4] * right.z +
+				left.elements[2 + 3 * 4] * right.w;
+			result.w = left.elements[3 + 0 * 4] * right.x +
+				left.elements[3 + 1 * 4] * right.y +
+				left.elements[3 + 2 * 4] * right.z +
+				left.elements[3 + 3 * 4] * right.w;
+
+			return result;
+		}*/
 
 		vec4 operator/(vec4 left, const vec4& right) {
 			return left.divid(right);

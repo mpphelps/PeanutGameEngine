@@ -1,5 +1,6 @@
 #include "vec2.h"
 
+
 namespace peanut {
 	namespace maths {
 		vec2::vec2() {

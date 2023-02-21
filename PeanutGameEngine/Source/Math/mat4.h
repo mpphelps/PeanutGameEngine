@@ -1,8 +1,10 @@
 #pragma once
-
+#include <istream>
+#include "maths_func.h"
+#include "vec2.h"
 #include "vec3.h"
 #include "vec4.h"
-#include "maths_func.h"
+
 
 namespace peanut {
 	namespace maths {
@@ -19,6 +21,8 @@ namespace peanut {
 			static mat4 identity();
 
 			mat4& multiply(const mat4& other);
+			vec4 multiply(vec4& other);
+			friend vec4 operator*(mat4 left, vec4& right);
 			friend mat4 operator*(mat4 left, const mat4& right);
 			mat4& operator*=(const mat4& other);
 

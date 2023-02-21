@@ -1,5 +1,5 @@
 #pragma once
-#include <iostream>
+#include <istream>
 
 namespace peanut {
 	namespace maths {
@@ -18,6 +18,7 @@ namespace peanut {
 			friend vec4 operator+(vec4 left, const vec4& right);
 			friend vec4 operator-(vec4 left, const vec4& right);
 			friend vec4 operator*(vec4 left, const vec4& right);
+			//friend vec4 operator*(const mat4 left, const vec4 right);
 			friend vec4 operator/(vec4 left, const vec4& right);
 
 			vec4& operator+=(const vec4& other);

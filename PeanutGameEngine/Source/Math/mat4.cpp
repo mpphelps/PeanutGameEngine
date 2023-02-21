@@ -39,6 +39,31 @@ namespace peanut {
 			return *this;
 		}
 
+		vec4 mat4::multiply(vec4& other) {
+			vec4 result;
+			result.x = this->elements[0 + 0 * 4] * other.x +
+				this->elements[0 + 1 * 4] * other.y +
+				this->elements[0 + 2 * 4] * other.z +
+				this->elements[0 + 3 * 4] * other.w;
+			result.y = this->elements[1 + 0 * 4] * other.x +
+				this->elements[1 + 1 * 4] * other.y +
+				this->elements[1 + 2 * 4] * other.z +
+				this->elements[1 + 3 * 4] * other.w;
+			result.z = this->elements[2 + 0 * 4] * other.x +
+				this->elements[2 + 1 * 4] * other.y +
+				this->elements[2 + 2 * 4] * other.z +
+				this->elements[2 + 3 * 4] * other.w;
+			result.w = this->elements[3 + 0 * 4] * other.x +
+				this->elements[3 + 1 * 4] * other.y +
+				this->elements[3 + 2 * 4] * other.z +
+				this->elements[3 + 3 * 4] * other.w;
+			return result;
+		}
+
+		vec4 operator*(mat4 left, vec4& right) {
+			return left.multiply(right);
+		}
+
 		mat4 operator*(mat4 left, const mat4& right) {
 			return left.multiply(right);
 		}
@@ -46,6 +71,10 @@ namespace peanut {
 		mat4& mat4::operator*=(const mat4& other) {
 			return multiply(other);
 		}
+
+
+		// It is advised to first do scaling operations, then rotations and lastly translations 
+		// when combining matrices otherwise they may (negatively) affect each other.
 
 		mat4 mat4::orthographic(float left, float right, float bottom, float top, float near, float far) {
 			// Cherno initialized everything to 1, and didn't have any 0s, but this is more in line with what's online

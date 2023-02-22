@@ -8,11 +8,14 @@
 #include "Source/glm/gtc/matrix_transform.hpp"
 #include "Source/glm/gtc/type_ptr.hpp"
 
-
+#define SCR_WIDTH 800
+#define SCR_HEIGHT 600
 #define LOG(x) std::cout << x << std::endl;
 
 // GLSL language integration
 //https://marketplace.visualstudio.com/items?itemName=DanielScherzer.GLSL
+
+
 
 int main()
 {
@@ -20,22 +23,80 @@ int main()
 	using namespace graphics;
 	using namespace maths;
 
-	Window window("Peanut!", 800, 600);
+	Window window("Peanut!", SCR_WIDTH, SCR_HEIGHT);
 	Shader shader("Source/Shaders/basicClip.vert", "Source/Shaders/basicClip.frag");
 	Texture texture1("Source/Textures/container.jpg", false);
 	Texture texture2("Source/Textures/awesomeface.png", true);
 
-	float vertices[] = {
-        // positions          // texture coords
-         0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
-         0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
-        -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left 
-    };
+	//float vertices[] = {
+ //       // positions          // texture coords
+ //        0.5f,  0.5f, 0.0f,  1.0f, 1.0f, // top right
+ //        0.5f, -0.5f, 0.0f,  1.0f, 0.0f, // bottom right
+ //       -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, // bottom left
+ //       -0.5f,  0.5f, 0.0f,  0.0f, 1.0f  // top left 
+ //   };
+
+	glEnable(GL_DEPTH_TEST);
+
+	constexpr float vertices[] = {
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+	};
     unsigned int indices[] = {
         0, 1, 3, // first triangle
         1, 2, 3  // second triangle
     };
+	glm::vec3 cubePositions[] = {
+	glm::vec3(0.0f,  0.0f,  0.0f),
+	glm::vec3(2.0f,  5.0f, -15.0f),
+	glm::vec3(-1.5f, -2.2f, -2.5f),
+	glm::vec3(-3.8f, -2.0f, -12.3f),
+	glm::vec3(2.4f, -0.4f, -3.5f),
+	glm::vec3(-1.7f,  3.0f, -7.5f),
+	glm::vec3(1.3f, -2.0f, -2.5f),
+	glm::vec3(1.5f,  2.0f, -2.5f),
+	glm::vec3(1.5f,  0.2f, -1.5f),
+	glm::vec3(-1.3f,  1.0f, -1.5f)
+	};
 
 	// It is advised to first do scaling operations, then rotations and lastly translations 
 	// when combining matrices otherwise they may (negatively) affect each other.
@@ -72,7 +133,6 @@ int main()
 	// texture coord attribute
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-
 	
 	// uncomment this call to draw in wireframe polygons.
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -90,36 +150,47 @@ int main()
 		texture2.bind(GL_TEXTURE1);
 		
 		// ****** first transformation ******
-		glm::mat4 model1 = glm::mat4(1.0f);
 		glm::mat4 view1 = glm::mat4(1.0f);
 		glm::mat4 projection1 = glm::mat4(1.0f);
-		model1 = glm::rotate(model1, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		view1 = glm::translate(view1, glm::vec3(-0.5f, 0.5f, -3.0f));
-		projection1 = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-		
+		view1 = translate(view1, glm::vec3(0, 0, -5.0f));
+		projection1 = glm::perspective(glm::radians(45.0f), static_cast<float>((SCR_WIDTH / SCR_HEIGHT)), 0.1f, 100.0f);
+
 		// set shader uniform
-		shader.setUniformMat4("model", model1);
 		shader.setUniformMat4("view", view1);
 		shader.setUniformMat4("projection", projection1);
-		// draw contain
+
+		//render boxes
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		for (unsigned int i = 0; i < 10; i++)
+		{
+			glm::mat4 model1 = glm::mat4(1.0f);
+			model1 = translate(model1, cubePositions[i]);
+			float angle = 20.0f * (i + 1) * (float)glfwGetTime();
+			model1 = rotate(model1, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+
+			// set shader uniform
+			shader.setUniformMat4("model", model1);
+
+			// draw contain
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// ****** second transformation using my own stuff ******
-		mat4 model2 = mat4::identity();
-		mat4 view2 = mat4::identity();
-		mat4 projection2 = mat4::identity();
-		model2 = mat4::rotation(maths::toRadians(-55.0f), vec3(1.0f, 0.0f, 0.0f));
-		view2 = mat4::translation(vec3(0.5f, -0.5f, -3.0f));
-		projection2 = mat4::perspective(maths::toRadians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-		
-		// set shader uniform
-		shader.setUniformMat4("model", model2);
-		shader.setUniformMat4("view", view2);
-		shader.setUniformMat4("projection", projection2);
-		//draw contain
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		//mat4 model2 = mat4::identity();
+		//mat4 view2 = mat4::identity();
+		//mat4 projection2 = mat4::identity();
+		//model2 = mat4::rotation(toRadians(-55.0f), vec3(1.0f, 0.0f, 0.0f));
+		//view2 = mat4::translation(vec3(0.5f, -0.5f, -3.0f));
+		//projection2 = mat4::perspective(toRadians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+		//
+		//// set shader uniform
+		//shader.setUniformMat4("model", model2);
+		//shader.setUniformMat4("view", view2);
+		//shader.setUniformMat4("projection", projection2);
+		////draw contain
+		//glBindVertexArray(VAO);
+		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		//glDrawArrays(GL_TRIANGLES, 0, 3);
 		window.update();

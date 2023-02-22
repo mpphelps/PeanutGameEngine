@@ -71,7 +71,7 @@ namespace peanut {
 
 		mat4 mat4::orthographic(float left, float right, float bottom, float top, float near, float far) {
 			// Cherno initialized everything to 1, and didn't have any 0s, but this is more in line with what's online
-			mat4 result(0.0f);
+			mat4 result = mat4::identity();
 
 			result.elements[3 + 3 * 4] = 1.0f;
 
@@ -87,7 +87,7 @@ namespace peanut {
 		}
 
 		mat4 mat4::perspective(float fov, float aspectRatio, float near, float far) {
-			mat4 result(0.0f);
+			mat4 result = mat4::identity();
 
 			result.elements[0 + 0 * 4] = 1.0f / (aspectRatio * tan(toRadians(fov) / 2));
 			result.elements[1 + 1 * 4] = 1.0f / (tan(toRadians(fov) / 2));
@@ -101,7 +101,7 @@ namespace peanut {
 		}
 
 		mat4 mat4::translation(const vec3& translation) {
-			mat4 result(0.0f);
+			mat4 result = mat4::identity();
 
 			result.elements[0 + 0 * 4] = 1.0f;
 			result.elements[1 + 1 * 4] = 1.0f;
@@ -146,7 +146,7 @@ namespace peanut {
 		}
 
 		mat4 mat4::scale(const vec3& scale) {
-			mat4 result(0.0f);
+			mat4 result = mat4::identity();
 
 			result.elements[0 + 0 * 4] = scale.x;
 			result.elements[1 + 1 * 4] = scale.y;

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-
+#include "camera.h"
 
 namespace peanut{
 	namespace graphics {
@@ -22,6 +22,9 @@ namespace peanut{
 			bool m_MouseButtons[MAX_BUTTONS];
 			double mx, my;
 		public:
+			Camera camera;
+
+		public:
 			Window(const char* title, int width, int height);
 			~Window();
 			bool closed() const;
@@ -34,6 +37,7 @@ namespace peanut{
 			bool isKeyPressed(unsigned int keycode) const;
 			bool isMouseButtonPressed(unsigned int button) const;
 			void getMousePosition(double& x, double& y) const;
+
 		private:
 			bool init();
 			friend static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);

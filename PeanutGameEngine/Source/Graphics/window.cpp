@@ -10,7 +10,8 @@ namespace peanut{
 		void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 		void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 
-		Window::Window(const char* title, int width, int height) {
+		Window::Window(const char* title, int width, int height)
+			{
 			m_Title = title;
 			m_Width = width;
 			m_Height = height;
@@ -23,6 +24,7 @@ namespace peanut{
 			for (int i = 0; i < MAX_BUTTONS; i++) {
 				m_MouseButtons[i] = false;
 			}
+			
 		}
 
 		Window::~Window() {
@@ -99,8 +101,10 @@ namespace peanut{
 		void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 			Window* win = (Window*)glfwGetWindowUserPointer(window);
 			win->m_Keys[key] = action != GLFW_RELEASE;
+			//std::cout << "Pressed: " << key << std::endl;
+			win->camera.ProcessInput(key);
 		}
-
+		
 		void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 			Window* win = (Window*)glfwGetWindowUserPointer(window);
 			win->m_MouseButtons[button] = action != GLFW_RELEASE;

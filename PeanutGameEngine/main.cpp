@@ -1,4 +1,5 @@
 #include "Source/Graphics/window.h"
+#include "Source/Graphics/camera.h"
 #include "Source/Graphics/shader.h"
 #include "Source/Math/maths.h"
 #include "Source/Utils/stb_image.h"
@@ -27,6 +28,8 @@ int main()
 	Shader shader("Source/Shaders/basicClip.vert", "Source/Shaders/basicClip.frag");
 	Texture texture1("Source/Textures/container.jpg", false);
 	Texture texture2("Source/Textures/awesomeface.png", true);
+	Camera camera;
+
 
 	//float vertices[] = {
  //       // positions          // texture coords
@@ -155,8 +158,22 @@ int main()
 		view1 = translate(view1, glm::vec3(0, 0, -5.0f));
 		projection1 = glm::perspective(glm::radians(45.0f), static_cast<float>((SCR_WIDTH / SCR_HEIGHT)), 0.1f, 100.0f);
 
+
+		const float radius = 10.0f;
+		float camX = sin(glfwGetTime()) * radius;
+		float camZ = cos(glfwGetTime()) * radius;
+		/*glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+		glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+		glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
+		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+		glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
+		glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);*/
+		glm::mat4 view2 = glm::lookAt(glm::vec3(camX, 0.0f, camZ),
+			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4 view3 = window.camera.View();
 		// set shader uniform
-		shader.setUniformMat4("view", view1);
+		shader.setUniformMat4("view", view3);
 		shader.setUniformMat4("projection", projection1);
 
 		//render boxes

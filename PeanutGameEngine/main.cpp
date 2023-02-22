@@ -21,7 +21,7 @@ int main()
 	using namespace maths;
 
 	Window window("Peanut!", 800, 600);
-	Shader shader("Source/Shaders/basicTransform.vert", "Source/Shaders/basicTransform.frag");
+	Shader shader("Source/Shaders/basicClip.vert", "Source/Shaders/basicClip.frag");
 	Texture texture1("Source/Textures/container.jpg", false);
 	Texture texture2("Source/Textures/awesomeface.png", true);
 
@@ -90,31 +90,34 @@ int main()
 		texture2.bind(GL_TEXTURE1);
 		
 		// ****** first transformation ******
-		float time = (float)glfwGetTime();
-		glm::mat4 transform = glm::mat4(1.0f);
-		transform = glm::translate(transform, glm::vec3(-0.5f, 0.5f, 0.0f));
-		//transform = glm::rotate(transform, (float)glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-		transform = glm::rotate(transform, time, glm::vec3(0.0f, 0.0f, 1.0f));
+		glm::mat4 model1 = glm::mat4(1.0f);
+		glm::mat4 view1 = glm::mat4(1.0f);
+		glm::mat4 projection1 = glm::mat4(1.0f);
+		model1 = glm::rotate(model1, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		view1 = glm::translate(view1, glm::vec3(-0.5f, 0.5f, -3.0f));
+		projection1 = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 		
 		// set shader uniform
-		shader.setUniformMat4("transform", transform);
+		shader.setUniformMat4("model", model1);
+		shader.setUniformMat4("view", view1);
+		shader.setUniformMat4("projection", projection1);
 		// draw contain
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// ****** second transformation using my own stuff ******
-		mat4 transform2 = mat4::identity();
-		transform2 = mat4::translation(vec3(0.5f, -0.5f, 0.0f));
-		//float scaleFactor = abs(sin(glfwGetTime()));
-		//transform2 = transform2 * mat4::scale(vec3(scaleFactor, scaleFactor, 0.0f));
-		//mat4 rotation2 = mat4::rotation(45, vec3(0.0f, 0.0f, 1.0f));
-		//transform2 = transform2 * rotation2;
-		mat4 rotation2 = mat4::rotation(time, vec3(0.0f, 0.0f, 1.0f));
-		transform2 = transform2 * rotation2;
-
+		mat4 model2 = mat4::identity();
+		mat4 view2 = mat4::identity();
+		mat4 projection2 = mat4::identity();
+		model2 = mat4::rotation(maths::toRadians(-55.0f), vec3(1.0f, 0.0f, 0.0f));
+		view2 = mat4::translation(vec3(0.5f, -0.5f, -3.0f));
+		projection2 = mat4::perspective(maths::toRadians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+		
 		// set shader uniform
-		shader.setUniformMat4("transform", transform2);
-		// draw contain
+		shader.setUniformMat4("model", model2);
+		shader.setUniformMat4("view", view2);
+		shader.setUniformMat4("projection", projection2);
+		//draw contain
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

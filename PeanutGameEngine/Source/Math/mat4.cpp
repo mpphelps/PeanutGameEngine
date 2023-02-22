@@ -87,10 +87,10 @@ namespace peanut {
 		}
 
 		mat4 mat4::perspective(float fov, float aspectRatio, float near, float far) {
-			mat4 result = mat4::identity();
+			mat4 result(0.0f);
 
-			result.elements[0 + 0 * 4] = 1.0f / (aspectRatio * tan(toRadians(fov) / 2));
-			result.elements[1 + 1 * 4] = 1.0f / (tan(toRadians(fov) / 2));
+			result.elements[0 + 0 * 4] = 1.0f / (aspectRatio * tan(fov / 2));
+			result.elements[1 + 1 * 4] = 1.0f / (tan(fov / 2));
 			result.elements[2 + 2 * 4] = -(far + near)/(far - near);
 
 			result.elements[2 + 3 * 4] = -(2.0f * far * near) / (far - near);

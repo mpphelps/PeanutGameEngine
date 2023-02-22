@@ -22,21 +22,22 @@ namespace peanut {
 			return mat4(1.0f);
 		}
 
-		mat4& mat4::multiply(const mat4& other) {
+		mat4 mat4::multiply(const mat4& other) {
 			// Perform multiplication in column major ordering
 			// This is for OpenGL
 			// e[row + col * 4]
+			mat4 result(0.0f);
 			for (int x = 0; x < 4; x++) {
 				for (int y = 0; y < 4; y++) {
 					float sum = 0.0f;
 					for (int e = 0; e < 4; e++) {
-						sum += elements[x + e * 4] * other.elements[e + y * 4];
+						sum += this->elements[x + e * 4] * other.elements[e + y * 4];
 					}
-					this->elements[x + y * 4] = sum;
+					result.elements[x + y * 4] = sum;
 				}
 			}
 
-			return *this;
+			return result;
 		}
 
 		vec4 mat4::multiply(vec4& other) {
@@ -67,11 +68,6 @@ namespace peanut {
 		mat4 operator*(mat4 left, const mat4& right) {
 			return left.multiply(right);
 		}
-
-		mat4& mat4::operator*=(const mat4& other) {
-			return multiply(other);
-		}
-
 
 		mat4 mat4::orthographic(float left, float right, float bottom, float top, float near, float far) {
 			// Cherno initialized everything to 1, and didn't have any 0s, but this is more in line with what's online
@@ -119,10 +115,10 @@ namespace peanut {
 			return result;
 		}
 
-		mat4 mat4::rotation(float angle, const vec3& axis) {
-			mat4 result(0.0f);
+		mat4 mat4::rotation(float radians, const vec3& axis) {
+			mat4 result = mat4::identity();
 
-			float a = toRadians(angle);
+			float a = radians;
 			float c = cos(a);
 			float s = sin(a);
 			float omc = 1.0f - c;

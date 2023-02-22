@@ -20,11 +20,10 @@ namespace peanut {
 
 			static mat4 identity();
 
-			mat4& multiply(const mat4& other);
+			mat4 multiply(const mat4& other);
 			vec4 multiply(vec4& other);
 			friend vec4 operator*(mat4 left, vec4& right);
 			friend mat4 operator*(mat4 left, const mat4& right);
-			mat4& operator*=(const mat4& other);
 
 			static mat4 orthographic(float left, float right, float bottom, float top, float near, float far);
 			static mat4 perspective(float fov, float aspectRatio, float near, float far);

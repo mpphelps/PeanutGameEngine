@@ -90,10 +90,11 @@ int main()
 		texture2.bind(GL_TEXTURE1);
 		
 		// ****** first transformation ******
+		float time = (float)glfwGetTime();
 		glm::mat4 transform = glm::mat4(1.0f);
-		transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
-		//transform = glm::rotate(transform, (float)glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-		transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+		transform = glm::translate(transform, glm::vec3(-0.5f, 0.5f, 0.0f));
+		//transform = glm::rotate(transform, (float)glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		transform = glm::rotate(transform, time, glm::vec3(0.0f, 0.0f, 1.0f));
 		
 		// set shader uniform
 		shader.setUniformMat4("transform", transform);
@@ -103,11 +104,13 @@ int main()
 
 		// ****** second transformation using my own stuff ******
 		mat4 transform2 = mat4::identity();
-		transform2 = mat4::translation(vec3(-0.5f, 0.5f, 0.0f));
-		float scaleFactor = abs(sin(glfwGetTime()));
-		transform2 = transform2 * mat4::scale(vec3(scaleFactor, scaleFactor, 0.0f));
-		//transform2 = transform2 * mat4::rotation((float)glfwGetTime(), vec3(0.0f, 0.0f, 1.0f));
-		//transform2 = transform2 * mat4::rotation(90, vec3(0.0f, 0.0f, 1.0f));
+		transform2 = mat4::translation(vec3(0.5f, -0.5f, 0.0f));
+		//float scaleFactor = abs(sin(glfwGetTime()));
+		//transform2 = transform2 * mat4::scale(vec3(scaleFactor, scaleFactor, 0.0f));
+		//mat4 rotation2 = mat4::rotation(45, vec3(0.0f, 0.0f, 1.0f));
+		//transform2 = transform2 * rotation2;
+		mat4 rotation2 = mat4::rotation(time, vec3(0.0f, 0.0f, 1.0f));
+		transform2 = transform2 * rotation2;
 
 		// set shader uniform
 		shader.setUniformMat4("transform", transform2);

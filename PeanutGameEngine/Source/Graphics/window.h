@@ -21,6 +21,11 @@ namespace peanut{
 			bool m_Keys[MAX_KEYS];
 			bool m_MouseButtons[MAX_BUTTONS];
 			double mx, my;
+
+			float m_DeltaTime = 0.0f;
+			float m_LastFrame = 0.0f;
+			float m_DeltaTimes[100];
+			int m_DeltaTimesIndex = 0;
 		public:
 			Camera camera;
 
@@ -35,6 +40,8 @@ namespace peanut{
 			inline int getHeight() const { return m_Height; }
 			inline void setWidth(int width) { m_Width = width; }
 			inline void setHeight(int height)  { m_Height = height; }
+
+			void cameraUpdate();
 
 			bool isKeyPressed(unsigned int keycode) const;
 			bool isMouseButtonPressed(unsigned int button) const;

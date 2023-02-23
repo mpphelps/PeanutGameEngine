@@ -79,6 +79,33 @@ namespace peanut{
 			y = my;
 		}
 
+		void Window::cameraUpdate() {
+			float currentFrame = static_cast<float>(glfwGetTime());
+			m_DeltaTime = currentFrame - m_LastFrame;
+			m_LastFrame = currentFrame;
+			
+			m_DeltaTimes[m_DeltaTimesIndex] = m_DeltaTime;
+			m_DeltaTimesIndex++;
+			int maxSamples = sizeof(m_DeltaTimes) / sizeof(float);
+			if (m_DeltaTimesIndex == maxSamples) {
+				m_DeltaTimesIndex = 0;
+				float average = 0.0f;
+				for (float time : m_DeltaTimes) {
+					average += time;
+				}
+				average = average / maxSamples;
+				std::cout << "fps: " << (1 / average) << std::endl;
+			}
+
+			camera.cameraFrameSpeed = m_DeltaTime * camera.cameraSpeed;
+			//std::cout << "fps: " << (1 / m_DeltaTime) << std::endl;
+			if (isKeyPressed(GLFW_KEY_W)) camera.ProcessInput(GLFW_KEY_W);
+			if (isKeyPressed(GLFW_KEY_S)) camera.ProcessInput(GLFW_KEY_S);
+			if (isKeyPressed(GLFW_KEY_A)) camera.ProcessInput(GLFW_KEY_A);
+			if (isKeyPressed(GLFW_KEY_D)) camera.ProcessInput(GLFW_KEY_D);
+		}
+
+
 		void Window::clear() const {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		}
@@ -104,8 +131,7 @@ namespace peanut{
 		void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 			Window* win = (Window*)glfwGetWindowUserPointer(window);
 			win->m_Keys[key] = action != GLFW_RELEASE;
-			//std::cout << "Pressed: " << key << std::endl;
-			win->camera.ProcessInput(key);
+			//std::cout << "Pressed key: " << key << " Action: " << action << std::endl;
 		}
 		
 		void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {

@@ -4,12 +4,14 @@
 
 namespace peanut {
 	namespace graphics {
-		Camera::Camera()
-		= default;
+		Camera::Camera() {
+			cameraSpeed = 0.1f;
+		}
 
 		Camera::Camera(glm::vec3 position)
 		{
 			cameraPos = position;
+			cameraSpeed = 0.1f;
 		}
 
 		Camera::~Camera()
@@ -20,23 +22,22 @@ namespace peanut {
 		void Camera::ProcessInput(int key)
 		{
 			//std::cout << "Processing input: " << key << std::endl;
-			const float cameraSpeed = 0.10f;
 			switch (key)
 			{
 			case GLFW_KEY_W:
-				std::cout << "W Key Pressed" << std::endl;
+				//std::cout << "W Key Pressed" << std::endl;
 				cameraPos += cameraSpeed * cameraFront;
 				break;
 			case GLFW_KEY_S:
-				std::cout << "S Key Pressed" << std::endl;
+				//std::cout << "S Key Pressed" << std::endl;
 				cameraPos -= cameraSpeed * cameraFront;
 				break;
 			case GLFW_KEY_A:
-				std::cout << "A Key Pressed" << std::endl;
+				//std::cout << "A Key Pressed" << std::endl;
 				cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 				break;
 			case GLFW_KEY_D:
-				std::cout << "D Key Pressed" << std::endl;
+				//std::cout << "D Key Pressed" << std::endl;
 				cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 				break;
 			}

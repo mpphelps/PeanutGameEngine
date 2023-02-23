@@ -147,6 +147,8 @@ int main()
 	while (!window.closed()) {
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		window.cameraUpdate();
+
 		window.clear();
 
 		texture1.bind(GL_TEXTURE0);

@@ -158,7 +158,7 @@ int main()
 		glm::mat4 view1 = glm::mat4(1.0f);
 		glm::mat4 projection1 = glm::mat4(1.0f);
 		view1 = translate(view1, glm::vec3(0, 0, -5.0f));
-		projection1 = glm::perspective(glm::radians(45.0f), static_cast<float>((window.getWidth() / window.getHeight())), 0.1f, 100.0f);
+		projection1 = glm::perspective(glm::radians(window.camera.fov), static_cast<float>((window.getWidth() / window.getHeight())), 0.1f, 100.0f);
 
 
 		const float radius = 10.0f;

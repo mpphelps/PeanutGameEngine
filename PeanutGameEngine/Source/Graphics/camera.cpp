@@ -43,6 +43,44 @@ namespace peanut {
 			}
 		}
 
+		void Camera::ProcessMouse(double xpos, double ypos)
+		{
+			if (firstMouse) {
+				m_lastX = xpos;
+				m_lastY = ypos;
+				firstMouse = false;
+				return;
+			}
+			float xoffset = xpos - m_lastX;
+			float yoffset = m_lastY - ypos; //reversed since y-coodinates ranged from bottom to top
+			m_lastX = xpos;
+			m_lastY = ypos;
+
+			const float sensitivity = 0.1f;
+			xoffset *= sensitivity;
+			yoffset *= sensitivity;
+
+			m_yaw += xoffset;
+			m_pitch += yoffset;
+
+			if (m_pitch > 89.0f) m_pitch = 89.0f;
+			if (m_pitch < -89.0f) m_pitch = -89.0f;
+
+			glm::vec3 direction;
+			direction.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+			direction.y = sin(glm::radians(m_pitch));
+			direction.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+
+			cameraFront = glm::normalize(direction);
+		}
+
+		void Camera::ProcessScroll(double xoffset, double yoffset)
+		{
+			fov -= (float)yoffset;
+			if (fov < 1.0f) fov = 1.0f;
+			if (fov > 45.0f) fov = 45.0f;
+		}
+
 		glm::mat4 Camera::View()
 		{
 			return glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);

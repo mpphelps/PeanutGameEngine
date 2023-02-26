@@ -9,6 +9,7 @@ namespace peanut{
 		void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 		void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 		void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
+		void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 		Window::Window(const char* title, int width, int height)
 			{
@@ -51,6 +52,9 @@ namespace peanut{
 			glfwSetKeyCallback(m_Window, key_callback);
 			glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
 			glfwSetCursorPosCallback(m_Window, cursor_position_callback);
+			glfwSetScrollCallback(m_Window, scroll_callback);
+
+			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 			if (glewInit() != GLEW_OK) {
 				LOG("Could not initalize GLEW!");
@@ -139,10 +143,17 @@ namespace peanut{
 			win->m_MouseButtons[button] = action != GLFW_RELEASE;
 		}
 
+		void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+			Window* win = (Window*)glfwGetWindowUserPointer(window);
+			win->camera.ProcessScroll(xoffset, yoffset);
+		}
+
 		void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
 			Window* win = (Window*)glfwGetWindowUserPointer(window);
 			win->mx = xpos;
-			win->my = ypos;
+			win->my = ypos;		
+			win->camera.ProcessMouse(xpos, ypos);
+
 		}
 	}
 }

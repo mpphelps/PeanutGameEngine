@@ -5,13 +5,14 @@
 namespace peanut {
 	namespace graphics {
 		Camera::Camera() {
-			cameraSpeed = 0.1f;
+			cameraFrameSpeed = 1.0f;
+			cameraSpeed = m_defaultCameraSpeed;
 		}
 
-		Camera::Camera(glm::vec3 position)
+		Camera::Camera(glm::vec3 position) : Camera()
 		{
 			cameraPos = position;
-			cameraSpeed = 0.1f;
+			//cameraSpeed = m_defaultCameraSpeed;
 		}
 
 		Camera::~Camera()
@@ -19,52 +20,51 @@ namespace peanut {
 
 		}
 
-		void Camera::ProcessInput(int key)
+		void Camera::ProcessKey(int key)
 		{
 			//std::cout << "Processing input: " << key << std::endl;
 			switch (key)
 			{
 			case GLFW_KEY_W:
 				//std::cout << "W Key Pressed" << std::endl;
-				cameraPos += cameraSpeed * cameraFront;
+				cameraPos += cameraFrameSpeed * cameraFront;
 				break;
 			case GLFW_KEY_S:
 				//std::cout << "S Key Pressed" << std::endl;
-				cameraPos -= cameraSpeed * cameraFront;
+				cameraPos -= cameraFrameSpeed * cameraFront;
 				break;
 			case GLFW_KEY_A:
 				//std::cout << "A Key Pressed" << std::endl;
-				cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+				cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraFrameSpeed;
 				break;
 			case GLFW_KEY_D:
 				//std::cout << "D Key Pressed" << std::endl;
-				cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+				cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraFrameSpeed;
 				break;
 			}
 		}
 
 		void Camera::ProcessMouse(double xpos, double ypos)
 		{
-			if (firstMouse) {
+			if (m_firstMouseInput) {
 				m_lastX = xpos;
 				m_lastY = ypos;
-				firstMouse = false;
-				return;
+				m_firstMouseInput = false;
 			}
+
 			float xoffset = xpos - m_lastX;
 			float yoffset = m_lastY - ypos; //reversed since y-coodinates ranged from bottom to top
 			m_lastX = xpos;
 			m_lastY = ypos;
 
-			const float sensitivity = 0.1f;
-			xoffset *= sensitivity;
-			yoffset *= sensitivity;
+			xoffset *= m_mouseSensitivity;
+			yoffset *= m_mouseSensitivity;
 
 			m_yaw += xoffset;
 			m_pitch += yoffset;
 
-			if (m_pitch > 89.0f) m_pitch = 89.0f;
-			if (m_pitch < -89.0f) m_pitch = -89.0f;
+			if (m_pitch > m_maxPitch) m_pitch = m_maxPitch;
+			if (m_pitch < m_minPitch) m_pitch = m_minPitch;
 
 			glm::vec3 direction;
 			direction.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
@@ -76,9 +76,13 @@ namespace peanut {
 
 		void Camera::ProcessScroll(double xoffset, double yoffset)
 		{
-			fov -= (float)yoffset;
-			if (fov < 1.0f) fov = 1.0f;
-			if (fov > 45.0f) fov = 45.0f;
+			m_fov -= (float)yoffset;
+			if (m_fov < m_minFov) m_fov = m_minFov;
+			if (m_fov > m_maxFov) m_fov = m_maxFov;
+		}
+
+		float Camera::Getfov() {
+			return m_fov;
 		}
 
 		glm::mat4 Camera::View()

@@ -87,7 +87,15 @@ namespace peanut{
 			float currentFrame = static_cast<float>(glfwGetTime());
 			m_DeltaTime = currentFrame - m_LastFrame;
 			m_LastFrame = currentFrame;
-			
+
+			camera.cameraFrameSpeed = m_DeltaTime * camera.cameraSpeed;
+			if (isKeyPressed(GLFW_KEY_W)) camera.ProcessKey(GLFW_KEY_W);
+			if (isKeyPressed(GLFW_KEY_S)) camera.ProcessKey(GLFW_KEY_S);
+			if (isKeyPressed(GLFW_KEY_A)) camera.ProcessKey(GLFW_KEY_A);
+			if (isKeyPressed(GLFW_KEY_D)) camera.ProcessKey(GLFW_KEY_D);
+		}
+
+		void Window::calculateFramerate() {
 			m_DeltaTimes[m_DeltaTimesIndex] = m_DeltaTime;
 			m_DeltaTimesIndex++;
 			int maxSamples = sizeof(m_DeltaTimes) / sizeof(float);
@@ -100,13 +108,6 @@ namespace peanut{
 				average = average / maxSamples;
 				std::cout << "fps: " << (1 / average) << std::endl;
 			}
-
-			camera.cameraFrameSpeed = m_DeltaTime * camera.cameraSpeed;
-			//std::cout << "fps: " << (1 / m_DeltaTime) << std::endl;
-			if (isKeyPressed(GLFW_KEY_W)) camera.ProcessInput(GLFW_KEY_W);
-			if (isKeyPressed(GLFW_KEY_S)) camera.ProcessInput(GLFW_KEY_S);
-			if (isKeyPressed(GLFW_KEY_A)) camera.ProcessInput(GLFW_KEY_A);
-			if (isKeyPressed(GLFW_KEY_D)) camera.ProcessInput(GLFW_KEY_D);
 		}
 
 

@@ -77,8 +77,10 @@ int main()
 		-0.5f,  0.5f, -0.5f,
 	};
 	// lighting
+	glm::vec3 objectColor(1.0, 0.5f, 0.31f);
+	glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 	glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
-
+	
 	// It is advised to first do scaling operations, then rotations and lastly translations 
 	// when combining matrices otherwise they may (negatively) affect each other.
 
@@ -116,8 +118,8 @@ int main()
 		//texture2.bind(GL_TEXTURE1);
 		
 		lightingShader.use();
-		lightingShader.setUniformMat3f("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
-		lightingShader.setUniformMat3f("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setUniformMat3f("objectColor", objectColor);
+		lightingShader.setUniformMat3f("lightColor", lightColor);
 
 		// ****** view/projection/model transformation ******
 		glm::mat4 projection = glm::perspective(glm::radians(window.camera.Getfov()), static_cast<float>((window.getWidth() / window.getHeight())), 0.1f, 100.0f);

@@ -104,6 +104,7 @@
     <None Include="Source\Shaders\lightingShader.frag" />
     <None Include="Source\Shaders\lightingShader.vert" />
     <None Include="Source\Shaders\lightSourceShader.frag" />
+    <None Include="Source\Shaders\lightSourceShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Source\Textures\wall.jpg">

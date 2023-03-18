@@ -134,6 +134,7 @@ int main()
 		lightingShader.setUniformMat3f("objectColor", objectColor);
 		lightingShader.setUniformMat3f("lightColor", lightColor);
 		lightingShader.setUniformMat3f("lightPos", lightPos);
+		lightingShader.setUniformMat3f("viewPos", window.camera.GetPos());
 
 		// ****** view/projection/model transformation ******
 		glm::mat4 projection = glm::perspective(glm::radians(window.camera.Getfov()), static_cast<float>((window.getWidth() / window.getHeight())), 0.1f, 100.0f);

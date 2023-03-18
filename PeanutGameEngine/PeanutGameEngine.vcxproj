@@ -57,6 +57,9 @@
     <None Include="Source\Shaders\basicTransform.vert" />
     <None Include="Source\Shaders\basicUniform.frag" />
     <None Include="Source\Shaders\basicUniform.vert" />
+    <None Include="Source\Shaders\lightingShader.frag" />
+    <None Include="Source\Shaders\lightingShader.vert" />
+    <None Include="Source\Shaders\lightSourceShader.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Source\Textures\awesomeface.png" />

@@ -87,7 +87,7 @@ int main()
 	// -------------------------
 	glm::vec3 objectColor(1.0, 0.5f, 0.31f);
 	glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
-	glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+	glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
 
 	unsigned int VBO, cubeVAO;
 	glGenVertexArrays(1, &cubeVAO);
@@ -157,8 +157,9 @@ int main()
 		model = glm::translate(model, lightPos);
 		model = glm::scale(model, glm::vec3(0.2f));
 		lightSourceShader.setUniformMat4("model", model);
-		lightPos.x = 1.0f + sin(glfwGetTime()) * 2.0f;
-		lightPos.y = sin(glfwGetTime() / 2.0f) * 1.0f;
+		lightPos.x = sin(glfwGetTime()) * 2.0f;
+		lightPos.y = cos(glfwGetTime()) * 2.0f;
+		lightPos.z = sin(glfwGetTime()) * 2.0f;
 		//render cube
 		glBindVertexArray(lightCubeVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);

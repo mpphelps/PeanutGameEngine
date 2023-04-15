@@ -85,8 +85,6 @@ int main()
 
 	// define lighting variables
 	// -------------------------
-	glm::vec3 objectColor(1.0, 0.5f, 0.31f);
-	glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 	glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
 
 	unsigned int VBO, cubeVAO;
@@ -131,10 +129,21 @@ int main()
 		//texture2.bind(GL_TEXTURE1);
 		
 		lightingShader.use();
-		lightingShader.setUniformMat3f("objectColor", objectColor);
-		lightingShader.setUniformMat3f("lightColor", lightColor);
 		lightingShader.setUniformMat3f("lightPos", lightPos);
 		lightingShader.setUniformMat3f("viewPos", window.camera.GetPos());
+		lightingShader.setUniformMat3f("material.ambient",  glm::vec3(0.0f, 0.1f, 0.06f));
+		lightingShader.setUniformMat3f("material.diffuse",  glm::vec3(0.0f, 0.50980392f, 0.50980392f));
+		lightingShader.setUniformMat3f("material.specular", glm::vec3(0.50196078f, 0.50196078f, 0.50196078f));
+		lightingShader.setUniformMat1f("material.shininess", 32.0f);
+		glm::vec3 lightColor;
+		lightColor.r = sin(glfwGetTime() * 2.0f);
+		lightColor.g = sin(glfwGetTime() * 0.7f);
+		lightColor.b = sin(glfwGetTime() * 1.3f);
+		glm::vec3 ambientColor = lightColor * glm::vec3(0.2f);
+		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+		lightingShader.setUniformMat3f("light.ambient", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setUniformMat3f("light.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setUniformMat3f("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
 		// ****** view/projection/model transformation ******
 		glm::mat4 projection = glm::perspective(glm::radians(window.camera.Getfov()), static_cast<float>((window.getWidth() / window.getHeight())), 0.1f, 100.0f);

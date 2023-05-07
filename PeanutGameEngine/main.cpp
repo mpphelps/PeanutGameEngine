@@ -9,6 +9,7 @@
 #include "Source/glm/glm.hpp"
 #include "Source/glm/gtc/matrix_transform.hpp"
 #include "Source/glm/gtc/type_ptr.hpp"
+#include "Source/Utils/log.h"
 
 
 
@@ -26,9 +27,13 @@ int main()
 	using namespace maths;
 	using namespace objects;
 
+	Log log("C:\\temp\\PeanutEngineLog.txt");
+	log.SetLogLevel(Info);
+
 	// create and initialize glfw window
 	// -----------------------------
 	Window window("Peanut!", SCR_WIDTH, SCR_HEIGHT);
+	log.Write("Created window object.", Info);
 
 	// build and compile our shader zprogram
 	// ------------------------------------
@@ -36,6 +41,7 @@ int main()
 	Shader lightSourceShader("Source/Shaders/lightSourceShader.vert", "Source/Shaders/lightSourceShader.frag");
 	Texture boxTexture("Source/Textures/container2.png", false);
 	Texture specularMap("Source/Textures/container2_specular.png", true);
+	log.Write("Created shader and texture objects.", Info);
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
@@ -83,6 +89,7 @@ int main()
 		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
 		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
 	};
+	log.Write("Vertices for cube defined.", Info);
 
 	// define lighting variables
 	// -------------------------
@@ -91,31 +98,40 @@ int main()
 	unsigned int VBO, cubeVAO;
 	glGenVertexArrays(1, &cubeVAO);
 	glGenBuffers(1, &VBO);
+	log.Write("Generated vertex arrays and buffers for main cube.", Info);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	log.Write("Buffer arrays binded for main cube.", Info);
 
 	glBindVertexArray(cubeVAO);
+	log.Write("Vertex arrays binded for main cube.", Info);
 	// Position
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+	log.Write("Position vertices location defined for main cube.", Info);
 	// Normals
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+	log.Write("Normal vertices location defined for main cube.", Info);
 	// Texture Coords
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
+	log.Write("Texture vertices location defined for main cube.", Info);
 
 
 	// second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
 	unsigned int lightCubeVAO;
 	glGenVertexArrays(1, &lightCubeVAO);
+	log.Write("Generated vertex arrays and buffers for light cube.", Info);
 	glBindVertexArray(lightCubeVAO);
+	log.Write("Vertex arrays binded for light cube.", Info);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	//glBindBuffer(GL_ARRAY_BUFFER, VBO);  not sure this is needed?
 	// note that we update the lamp's position attribute's stride to reflect the updated buffer data
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+	log.Write("Position vertices location defined for light cube.", Info);
 	
 	// uncomment this call to draw in wireframe polygons.
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -125,7 +141,6 @@ int main()
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		window.cameraUpdate();
 		window.calculateFramerate();
-
 		window.clear();
 		
 		lightingShader.use();
@@ -178,12 +193,16 @@ int main()
 	glDeleteVertexArrays(1, &cubeVAO);
 	glDeleteVertexArrays(1, &lightCubeVAO);
 	glDeleteBuffers(1, &VBO);
+	log.Write("Buffers and vertex arrays deleted.", Info);
 	lightingShader.disable();
 	lightingShader.~Shader();
 	lightSourceShader.disable();
 	lightSourceShader.~Shader();
-	//texture1.~Texture();
-	//texture2.~Texture();
+	boxTexture.~Texture();
+	specularMap.~Texture();
+	log.Write("Shaders and Textures deleted.", Info);
 	glfwTerminate();
+	log.Write("Glfw terminated.", Info);
+
 	return 0;
 }

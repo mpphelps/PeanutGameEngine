@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Utils\log.cpp" />
     <ClCompile Include="Source\Objects\cubes.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Source\Graphics\camera.cpp" />
@@ -32,6 +33,7 @@
     <ClCompile Include="Source\Utils\stb_define.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Utils\log.h" />
     <ClInclude Include="Source\Objects\cubes.h" />
     <ClInclude Include="Source\Graphics\camera.h" />
     <ClInclude Include="Source\Graphics\shader.h" />

@@ -104,9 +104,14 @@ int main()
 		glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 	log.Write("Cube positions defined.", Info);
-	// define lighting variables
-	// -------------------------
-	glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+	// positions of the point lights
+	glm::vec3 pointLightPositions[] = {
+		glm::vec3(0.7f,  0.2f,  2.0f),
+		glm::vec3(2.3f, -3.3f, -4.0f),
+		glm::vec3(-4.0f,  2.0f, -12.0f),
+		glm::vec3(0.0f,  0.0f, -3.0f)
+	};
+	log.Write("Point light positions defined.", Info);
 
 	unsigned int VBO, cubeVAO;
 	glGenVertexArrays(1, &cubeVAO);
@@ -140,7 +145,7 @@ int main()
 	glBindVertexArray(lightCubeVAO);
 	log.Write("Vertex arrays binded for light cube.", Info);
 
-	//glBindBuffer(GL_ARRAY_BUFFER, VBO);  not sure this is needed?
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	// note that we update the lamp's position attribute's stride to reflect the updated buffer data
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -157,23 +162,63 @@ int main()
 		window.clear();
 		
 		lightingShader.use();
-		lightingShader.setUniformMat3f("light.position", window.camera.GetPos());
-		lightingShader.setUniformMat3f("light.direction", window.camera.GetFront());
-		lightingShader.setUniformMat1f("light.cutOff", glm::cos(glm::radians(12.5f)));
-		lightingShader.setUniformMat1f("light.outerCutOff", glm::cos(glm::radians(17.5f)));
 		lightingShader.setUniformMat3f("viewPos", window.camera.GetPos());
+		lightingShader.setUniformMat1f("material.shininess", 32.0f);
 
-		lightingShader.setUniformMat3f("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
-        lightingShader.setUniformMat3f("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
-        lightingShader.setUniformMat3f("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-
-		lightingShader.setUniformMat1f("light.constant", 1.0f);
-		lightingShader.setUniformMat1f("light.linear", 0.09f);
-		lightingShader.setUniformMat1f("light.quadratic", 0.032f);
-
-		lightingShader.setUniformMat1f("material.shininess", 32.0f);		
-		lightingShader.setUniformMat1i("material.diffuse", 0);
-		lightingShader.setUniformMat1i("material.specular", 1);
+		/*
+		   Here we set all the uniforms for the 5/6 types of lights we have. We have to set them manually and index
+		   the proper PointLight struct in the array to set each uniform variable. This can be done more code-friendly
+		   by defining light types as classes and set their values in there, or by using a more efficient uniform approach
+		   by using 'Uniform buffer objects', but that is something we'll discuss in the 'Advanced GLSL' tutorial.
+		*/
+		// directional light
+		lightingShader.setUniformMat3f("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
+		lightingShader.setUniformMat3f("dirLight.ambient", glm::vec3(0.05f, 0.05f, 0.05f));
+		lightingShader.setUniformMat3f("dirLight.diffuse", glm::vec3(0.4f, 0.4f, 0.4f));
+		lightingShader.setUniformMat3f("dirLight.specular", glm::vec3(0.5f, 0.5f, 0.5f));
+		// point light 1
+		lightingShader.setUniformMat3f("pointLights[0].position", pointLightPositions[0]);
+		lightingShader.setUniformMat3f("pointLights[0].ambient", glm::vec3(0.05f, 0.05f, 0.05f));
+		lightingShader.setUniformMat3f("pointLights[0].diffuse", glm::vec3(0.8f, 0.8f, 0.8f));
+		lightingShader.setUniformMat3f("pointLights[0].specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setUniformMat1f("pointLights[0].constant", 1.0f);
+		lightingShader.setUniformMat1f("pointLights[0].linear", 0.09f);
+		lightingShader.setUniformMat1f("pointLights[0].quadratic", 0.032f);
+		// point light 2
+		lightingShader.setUniformMat3f("pointLights[1].position", pointLightPositions[1]);
+		lightingShader.setUniformMat3f("pointLights[1].ambient", glm::vec3(0.05f, 0.05f, 0.05f));
+		lightingShader.setUniformMat3f("pointLights[1].diffuse", glm::vec3(0.8f, 0.8f, 0.8f));
+		lightingShader.setUniformMat3f("pointLights[1].specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setUniformMat1f("pointLights[1].constant", 1.0f);
+		lightingShader.setUniformMat1f("pointLights[1].linear", 0.09f);
+		lightingShader.setUniformMat1f("pointLights[1].quadratic", 0.032f);
+		// point light 3
+		lightingShader.setUniformMat3f("pointLights[2].position", pointLightPositions[2]);
+		lightingShader.setUniformMat3f("pointLights[2].ambient", glm::vec3(0.05f, 0.05f, 0.05f));
+		lightingShader.setUniformMat3f("pointLights[2].diffuse", glm::vec3(0.8f, 0.8f, 0.8f));
+		lightingShader.setUniformMat3f("pointLights[2].specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setUniformMat1f("pointLights[2].constant", 1.0f);
+		lightingShader.setUniformMat1f("pointLights[2].linear", 0.09f);
+		lightingShader.setUniformMat1f("pointLights[2].quadratic", 0.032f);
+		// point light 4
+		lightingShader.setUniformMat3f("pointLights[3].position", pointLightPositions[3]);
+		lightingShader.setUniformMat3f("pointLights[3].ambient", glm::vec3(0.05f, 0.05f, 0.05f));
+		lightingShader.setUniformMat3f("pointLights[3].diffuse", glm::vec3(0.8f, 0.8f, 0.8f));
+		lightingShader.setUniformMat3f("pointLights[3].specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setUniformMat1f("pointLights[3].constant", 1.0f);
+		lightingShader.setUniformMat1f("pointLights[3].linear", 0.09f);
+		lightingShader.setUniformMat1f("pointLights[3].quadratic", 0.032f);
+		// spotLight
+		lightingShader.setUniformMat3f("spotLight.position", window.camera.GetPos());
+		lightingShader.setUniformMat3f("spotLight.direction", window.camera.GetFront());
+		lightingShader.setUniformMat3f("spotLight.ambient", glm::vec3(0.0f, 0.0f, 0.0f));
+		lightingShader.setUniformMat3f("spotLight.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setUniformMat3f("spotLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setUniformMat1f("spotLight.constant", 1.0f);
+		lightingShader.setUniformMat1f("spotLight.linear", 0.09f);
+		lightingShader.setUniformMat1f("spotLight.quadratic", 0.032f);
+		lightingShader.setUniformMat1f("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
+		lightingShader.setUniformMat1f("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 
 		// view/projection transformations
 		glm::mat4 projection = glm::perspective(glm::radians(window.camera.Getfov()), (float)window.getWidth() / (float)window.getHeight(), 0.1f, 100.0f);
@@ -203,19 +248,20 @@ int main()
 		}
 
 		// draw the lamp object
-		//lightSourceShader.use();
-		//lightSourceShader.setUniformMat4("projection", projection);
-		//lightSourceShader.setUniformMat4("view", view);
-		//model = glm::mat4(1.0f);
-		//model = glm::translate(model, lightPos);
-		//model = glm::scale(model, glm::vec3(0.2f));
-		//lightSourceShader.setUniformMat4("model", model);
-		////lightPos.x = sin(glfwGetTime()) * 2.0f;
-		////lightPos.y = cos(glfwGetTime()) * 2.0f;
-		////lightPos.z = sin(glfwGetTime()) * 2.0f;
-		////render cube
-		//glBindVertexArray(lightCubeVAO);
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		lightSourceShader.use();
+		lightSourceShader.setUniformMat4("projection", projection);
+		lightSourceShader.setUniformMat4("view", view);
+
+		// we now draw as many light bulbs as we have point lights.
+		glBindVertexArray(lightCubeVAO);
+		for (unsigned int i = 0; i < 4; i++)
+		{
+			model = glm::mat4(1.0f);
+			model = glm::translate(model, pointLightPositions[i]);
+			model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
+			lightSourceShader.setUniformMat4("model", model);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
 		
 		window.update();
 

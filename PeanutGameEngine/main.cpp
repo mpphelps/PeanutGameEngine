@@ -90,7 +90,20 @@ int main()
 		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
 	};
 	log.Write("Vertices for cube defined.", Info);
-
+	// positions all containers
+	glm::vec3 cubePositions[] = {
+		glm::vec3(0.0f,  0.0f,  0.0f),
+		glm::vec3(2.0f,  5.0f, -15.0f),
+		glm::vec3(-1.5f, -2.2f, -2.5f),
+		glm::vec3(-3.8f, -2.0f, -12.3f),
+		glm::vec3(2.4f, -0.4f, -3.5f),
+		glm::vec3(-1.7f,  3.0f, -7.5f),
+		glm::vec3(1.3f, -2.0f, -2.5f),
+		glm::vec3(1.5f,  2.0f, -2.5f),
+		glm::vec3(1.5f,  0.2f, -1.5f),
+		glm::vec3(-1.3f,  1.0f, -1.5f)
+	};
+	log.Write("Cube positions defined.", Info);
 	// define lighting variables
 	// -------------------------
 	glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
@@ -144,23 +157,31 @@ int main()
 		window.clear();
 		
 		lightingShader.use();
-		lightingShader.setUniformMat3f("light.position", lightPos);
+		lightingShader.setUniformMat3f("light.position", window.camera.GetPos());
+		lightingShader.setUniformMat3f("light.direction", window.camera.GetFront());
+		lightingShader.setUniformMat1f("light.cutOff", glm::cos(glm::radians(12.5f)));
+		lightingShader.setUniformMat1f("light.outerCutOff", glm::cos(glm::radians(17.5f)));
 		lightingShader.setUniformMat3f("viewPos", window.camera.GetPos());
 
 		lightingShader.setUniformMat3f("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
         lightingShader.setUniformMat3f("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
         lightingShader.setUniformMat3f("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
+		lightingShader.setUniformMat1f("light.constant", 1.0f);
+		lightingShader.setUniformMat1f("light.linear", 0.09f);
+		lightingShader.setUniformMat1f("light.quadratic", 0.032f);
+
+		lightingShader.setUniformMat1f("material.shininess", 32.0f);		
 		lightingShader.setUniformMat1i("material.diffuse", 0);
 		lightingShader.setUniformMat1i("material.specular", 1);
-		lightingShader.setUniformMat1f("material.shininess", 64.0f);		
 
 		// view/projection transformations
 		glm::mat4 projection = glm::perspective(glm::radians(window.camera.Getfov()), (float)window.getWidth() / (float)window.getHeight(), 0.1f, 100.0f);
 		glm::mat4 view = window.camera.View();
-		glm::mat4 model = glm::mat4(1.0f);
 		lightingShader.setUniformMat4("projection", projection);
 		lightingShader.setUniformMat4("view", view);
+
+		glm::mat4 model = glm::mat4(1.0f);
 		lightingShader.setUniformMat4("model", model);
 		
 		// bind diffuse map
@@ -169,22 +190,32 @@ int main()
 
 		//render cube
 		glBindVertexArray(cubeVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		for (unsigned int i = 0; i < 10; i++)
+		{
+			// calculate the model matrix for each object and pass it to shader before drawing
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, cubePositions[i]);
+			float angle = 20.0f * i;
+			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+			lightingShader.setUniformMat4("model", model);
+
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
 
 		// draw the lamp object
-		lightSourceShader.use();
-		lightSourceShader.setUniformMat4("projection", projection);
-		lightSourceShader.setUniformMat4("view", view);
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, lightPos);
-		model = glm::scale(model, glm::vec3(0.2f));
-		lightSourceShader.setUniformMat4("model", model);
-		lightPos.x = sin(glfwGetTime()) * 2.0f;
-		lightPos.y = cos(glfwGetTime()) * 2.0f;
-		lightPos.z = sin(glfwGetTime()) * 2.0f;
-		//render cube
-		glBindVertexArray(lightCubeVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		//lightSourceShader.use();
+		//lightSourceShader.setUniformMat4("projection", projection);
+		//lightSourceShader.setUniformMat4("view", view);
+		//model = glm::mat4(1.0f);
+		//model = glm::translate(model, lightPos);
+		//model = glm::scale(model, glm::vec3(0.2f));
+		//lightSourceShader.setUniformMat4("model", model);
+		////lightPos.x = sin(glfwGetTime()) * 2.0f;
+		////lightPos.y = cos(glfwGetTime()) * 2.0f;
+		////lightPos.z = sin(glfwGetTime()) * 2.0f;
+		////render cube
+		//glBindVertexArray(lightCubeVAO);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
 		
 		window.update();
 

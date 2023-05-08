@@ -45,6 +45,7 @@ namespace peanut {
 			void ProcessScroll(double xoffset, double yoffset);
 			float Getfov();
 			glm::vec3 GetPos();
+			glm::vec3 GetFront();
 			glm::mat4 View();
 		};
 	}

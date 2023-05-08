@@ -89,6 +89,10 @@ namespace peanut {
 			return cameraPos;
 		}
 
+		glm::vec3 Camera::GetFront() {
+			return cameraFront;
+		}
+
 		glm::mat4 Camera::View()
 		{
 			return glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);

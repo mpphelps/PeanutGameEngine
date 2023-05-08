@@ -85,6 +85,14 @@ namespace peanut {
 			return m_fov;
 		}
 
+		glm::vec3 Camera::GetPos() {
+			return cameraPos;
+		}
+
+		glm::vec3 Camera::GetFront() {
+			return cameraFront;
+		}
+
 		glm::mat4 Camera::View()
 		{
 			return glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);

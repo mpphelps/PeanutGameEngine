@@ -48,6 +48,9 @@
     <ClCompile Include="Source\Objects\cubes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Utils\log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\window.h">
@@ -89,6 +92,9 @@
     <ClInclude Include="Source\Objects\cubes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Utils\log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shaders\basic.vert" />
@@ -101,6 +107,10 @@
     <None Include="Source\Shaders\basicTransform.frag" />
     <None Include="Source\Shaders\basicClip.vert" />
     <None Include="Source\Shaders\basicClip.frag" />
+    <None Include="Source\Shaders\lightingShader.frag" />
+    <None Include="Source\Shaders\lightingShader.vert" />
+    <None Include="Source\Shaders\lightSourceShader.frag" />
+    <None Include="Source\Shaders\lightSourceShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Source\Textures\wall.jpg">

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Utils\log.cpp" />
     <ClCompile Include="Source\Objects\cubes.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Source\Graphics\camera.cpp" />
@@ -32,6 +33,7 @@
     <ClCompile Include="Source\Utils\stb_define.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Utils\log.h" />
     <ClInclude Include="Source\Objects\cubes.h" />
     <ClInclude Include="Source\Graphics\camera.h" />
     <ClInclude Include="Source\Graphics\shader.h" />
@@ -57,6 +59,10 @@
     <None Include="Source\Shaders\basicTransform.vert" />
     <None Include="Source\Shaders\basicUniform.frag" />
     <None Include="Source\Shaders\basicUniform.vert" />
+    <None Include="Source\Shaders\lightingShader.frag" />
+    <None Include="Source\Shaders\lightingShader.vert" />
+    <None Include="Source\Shaders\lightSourceShader.frag" />
+    <None Include="Source\Shaders\lightSourceShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Source\Textures\awesomeface.png" />

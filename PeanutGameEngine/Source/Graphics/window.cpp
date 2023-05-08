@@ -24,8 +24,7 @@ namespace peanut{
 			}
 			for (int i = 0; i < MAX_BUTTONS; i++) {
 				m_MouseButtons[i] = false;
-			}
-			
+			}			
 		}
 
 		Window::~Window() {
@@ -60,6 +59,10 @@ namespace peanut{
 				LOG("Could not initalize GLEW!");
 				return false;
 			}
+
+			// configure global opengl state
+			// -----------------------------
+			glEnable(GL_DEPTH_TEST);
 
 			std::cout << "OpenGL" << glGetString(GL_VERSION) << std::endl;
 

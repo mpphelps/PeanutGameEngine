@@ -11,7 +11,7 @@
 #include "Source/glm/gtc/type_ptr.hpp"
 #include "Source/Utils/log.h"
 
-
+#include "../Dependencies/ASSIMP/include/assimp/scene.h"
 
 #define SCR_WIDTH 800
 #define SCR_HEIGHT 600

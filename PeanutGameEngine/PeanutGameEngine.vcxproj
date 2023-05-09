@@ -19,12 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Graphics\mesh.cpp" />
     <ClCompile Include="Source\Utils\log.cpp" />
     <ClCompile Include="Source\Objects\cubes.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Source\Graphics\camera.cpp" />
     <ClCompile Include="Source\Graphics\shader.cpp" />
-    <ClCompile Include="Source\Graphics\texture.cpp" />
+    <ClCompile Include="Source\Graphics\textureImage.cpp" />
     <ClCompile Include="Source\Graphics\window.cpp" />
     <ClCompile Include="Source\Math\mat4.cpp" />
     <ClCompile Include="Source\Math\vec2.cpp" />
@@ -33,11 +34,12 @@
     <ClCompile Include="Source\Utils\stb_define.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Graphics\mesh.h" />
     <ClInclude Include="Source\Utils\log.h" />
     <ClInclude Include="Source\Objects\cubes.h" />
     <ClInclude Include="Source\Graphics\camera.h" />
     <ClInclude Include="Source\Graphics\shader.h" />
-    <ClInclude Include="Source\Graphics\texture.h" />
+    <ClInclude Include="Source\Graphics\textureImage.h" />
     <ClInclude Include="Source\Graphics\window.h" />
     <ClInclude Include="Source\Math\mat4.h" />
     <ClInclude Include="Source\Math\maths.h" />

@@ -3,7 +3,7 @@
 #include "Source/Graphics/shader.h"
 #include "Source/Math/maths.h"
 #include "Source/Utils/stb_image.h"
-#include "Source/Graphics/texture.h"
+#include "Source/Graphics/textureImage.h"
 #include "Source/Objects/cubes.h"
 
 #include "Source/glm/glm.hpp"
@@ -39,8 +39,8 @@ int main()
 	// ------------------------------------
 	Shader lightingShader("Source/Shaders/lightingShader.vert", "Source/Shaders/lightingShader.frag");
 	Shader lightSourceShader("Source/Shaders/lightSourceShader.vert", "Source/Shaders/lightSourceShader.frag");
-	Texture boxTexture("Source/Textures/container2.png", false);
-	Texture specularMap("Source/Textures/container2_specular.png", true);
+	TextureImage boxTexture("Source/Textures/container2.png", false);
+	TextureImage specularMap("Source/Textures/container2_specular.png", true);
 	log.Write("Created shader and texture objects.", Info);
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
@@ -132,10 +132,10 @@ int main()
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 	log.Write("Normal vertices location defined for main cube.", Info);
-	// Texture Coords
+	// TextureImage Coords
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
-	log.Write("Texture vertices location defined for main cube.", Info);
+	log.Write("TextureImage vertices location defined for main cube.", Info);
 
 
 	// second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
@@ -275,8 +275,8 @@ int main()
 	lightingShader.~Shader();
 	lightSourceShader.disable();
 	lightSourceShader.~Shader();
-	boxTexture.~Texture();
-	specularMap.~Texture();
+	boxTexture.~TextureImage();
+	specularMap.~TextureImage();
 	log.Write("Shaders and Textures deleted.", Info);
 	glfwTerminate();
 	log.Write("Glfw terminated.", Info);

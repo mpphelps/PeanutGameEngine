@@ -7,14 +7,14 @@
 namespace peanut {
 	namespace graphics {
 
-		class Texture {
+		class TextureImage {
 		private:
 			GLuint m_TextureID;
 			std::string m_Texturepath;
 			int m_Width, m_Height, m_nrChannels;
 		public:
-			Texture(const char* texturepath, bool flipYaxis);
-			~Texture();
+			TextureImage(const char* texturepath, bool flipYaxis);
+			~TextureImage();
 			void bind(GLenum texture);
 		};
 

@@ -1,9 +1,9 @@
-#include "texture.h"
+#include "textureImage.h"
 
 namespace peanut {
 	namespace graphics {
 
-		Texture::Texture(const char* texturepath, bool flipYaxis) {
+		TextureImage::TextureImage(const char* texturepath, bool flipYaxis) {
 			m_Texturepath = texturepath;
 
 			glGenTextures(1, &m_TextureID);
@@ -48,14 +48,14 @@ namespace peanut {
 			stbi_image_free(data);
 		}
 
-		Texture::~Texture(){
+		TextureImage::~TextureImage(){
 			glDeleteProgram(m_TextureID);
 		};
 
 
 
-		void Texture::bind(GLenum texture) {
-			// Texture Units can be from GL_TEXTURE0 to 15
+		void TextureImage::bind(GLenum texture) {
+			// TextureImage Units can be from GL_TEXTURE0 to 15
 			glActiveTexture(texture);
 			glBindTexture(GL_TEXTURE_2D, m_TextureID);
 		}

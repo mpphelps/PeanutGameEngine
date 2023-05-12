@@ -1,12 +1,11 @@
 #pragma once
 #include <GL/glew.h>
-#include <vector>
-#include <iostream>
-#include "../Math/maths.h"
-#include "../Utils/fileutils.h"
 #include "../glm/glm.hpp"
 
+#include "../Utils/fileutils.h"
 
+#include <vector>
+#include <iostream>
 
 namespace peanut {
 	namespace graphics {
@@ -26,16 +25,18 @@ namespace peanut {
 			void setUniformMat3f(const GLchar* name, const glm::vec3& vector);
 			void setUniformMat4f(const GLchar* name, const glm::vec4& vector);
 			void setUniformMat4(const GLchar* name, const glm::mat4& matrix);
-			void setUniformMat4(const GLchar* name, const maths::mat4& matrix);
 
 			void use() const;
 			void disable() const;
+
+			GLuint GetShaderID();
 
 		private:
 			GLint getUniformLocation(const GLchar* name);
 			GLuint load();
 			GLuint compileShader(const char* shaderPath, GLenum type);
 			GLuint linkShaderProgram(GLuint vertex, GLuint fragment);
+			
 			
 		};
 

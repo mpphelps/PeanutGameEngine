@@ -79,7 +79,12 @@ namespace peanut {
 			return program;
 		}
 
-		GLint Shader::getUniformLocation(const GLchar* name) {
+        GLuint Shader::GetShaderID()
+        {
+			return m_ShaderID;
+        }
+
+        GLint Shader::getUniformLocation(const GLchar* name) {
 			return glGetUniformLocation(m_ShaderID, name);
 		}
 
@@ -105,10 +110,6 @@ namespace peanut {
 
 		void Shader::setUniformMat4(const GLchar* name, const glm::mat4& matrix) {
 			glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
-		}
-
-		void Shader::setUniformMat4(const GLchar* name, const maths::mat4& matrix) {
-			glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, matrix.elements);
 		}
 
 	}

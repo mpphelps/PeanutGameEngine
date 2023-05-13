@@ -37,6 +37,9 @@ int main()
 	// -----------------------------
 	Window window("Peanut!", SCR_WIDTH, SCR_HEIGHT);
 	log.Write("Created window object.", Info);
+
+	//******  HWY DID WE HAVE TO FLIP AND GL_DEPTH TEST HERE INSTEAD OF WINDOW.
+
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
 	stbi_set_flip_vertically_on_load(true);
 

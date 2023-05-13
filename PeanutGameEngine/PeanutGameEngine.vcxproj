@@ -67,6 +67,8 @@
     <None Include="Source\Shaders\lightingShader.vert" />
     <None Include="Source\Shaders\lightSourceShader.frag" />
     <None Include="Source\Shaders\lightSourceShader.vert" />
+    <None Include="Source\Shaders\modelLoading.frag" />
+    <None Include="Source\Shaders\modelLoading.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Source\Textures\awesomeface.png" />

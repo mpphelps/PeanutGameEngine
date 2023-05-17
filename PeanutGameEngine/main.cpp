@@ -15,13 +15,8 @@
 #include "../Dependencies/ASSIMP/include/assimp/scene.h"
 #include <iostream>
 
-
 #define SCR_WIDTH 800
 #define SCR_HEIGHT 600
-#define LOG(x) std::cout << x << std::endl;
-
-// GLSL language integration
-//https://marketplace.visualstudio.com/items?itemName=DanielScherzer.GLSL
 
 int main()
 {
@@ -38,24 +33,15 @@ int main()
 	Window window("Peanut!", SCR_WIDTH, SCR_HEIGHT);
 	log.Write("Created window object.", Info);
 
-	//******  HWY DID WE HAVE TO FLIP AND GL_DEPTH TEST HERE INSTEAD OF WINDOW.
-
-	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
-	stbi_set_flip_vertically_on_load(true);
-
-	// configure global opengl state
-	// -----------------------------
-	glEnable(GL_DEPTH_TEST);
 	// build and compile our shader zprogram
 	// ------------------------------------
 	Shader ourShader("Source/Shaders/modelLoading.vert", "Source/Shaders/modelLoading.frag");
-	Model ourModel("Source/Objects/SurvivalBackpack/backpack.obj");
+	Model ourModel("Source/Objects/SurvivalBackpack/backpack.obj", true);
 	log.Write("Created shader and model objects.", Info);
 
 
 	while (!window.closed()) {
 
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		window.cameraUpdate();
 		window.calculateFramerate();
 		window.clear();

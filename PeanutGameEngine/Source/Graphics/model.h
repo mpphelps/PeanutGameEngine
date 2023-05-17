@@ -35,9 +35,12 @@ namespace peanut
             bool gammaCorrection;
 
             // constructor, expects a filepath to a 3D model.
-            Model(std::string const& path, bool gamma = false) : gammaCorrection(gamma)
+            Model(std::string const& path, bool flip = false, bool gamma = false) : gammaCorrection(gamma)
             {
+                // tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
+                stbi_set_flip_vertically_on_load(flip);
                 LoadModel(path);
+
             }
             void Draw(Shader& shader);
         private:
